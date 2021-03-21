@@ -17,7 +17,15 @@ import { createUser } from './src/graphql/mutations';
 import { withAuthenticator } from 'aws-amplify-react-native'
 import Amplify from 'aws-amplify'
 import config from './aws-exports'
-Amplify.configure(config)
+Amplify.configure({
+  ...config,
+  Storage: {
+    AWSS3: {
+        bucket: 'chat-app-bucket214505-dev', //REQUIRED -  Amazon S3 bucket name
+        region: 'us-east-1', //OPTIONAL -  Amazon service region
+    }
+}
+})
 
 const randomImages = [
   'https://hieumobile.com/wp-content/uploads/avatar-among-us-2.jpg',
