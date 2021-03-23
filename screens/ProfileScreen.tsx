@@ -37,6 +37,10 @@ import InputBox from "../components/InputBox";
 import { getUser } from './queries';
 import { updateUser } from '../src/graphql/mutations';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import {
+    AWS_ACCESS_KEY_ID,
+    AWS_SECRET_KEY,
+} from '../env'
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;

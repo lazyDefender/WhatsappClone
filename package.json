@@ -26,6 +26,7 @@
     "expo": "~39.0.2",
     "expo-asset": "~8.2.0",
     "expo-constants": "~9.2.0",
+    "expo-contacts": "~8.5.0",
     "expo-document-picker": "~8.4.0",
     "expo-file-system": "~9.2.0",
     "expo-font": "~8.3.0",
