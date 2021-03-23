@@ -20,6 +20,7 @@ import {
   Entypo,
   Fontisto,
 } from '@expo/vector-icons';
+import { listChatRoomUsers } from '../../src/graphql/queries';
 
 const InputBox = (props) => {
 
@@ -59,6 +60,7 @@ const InputBox = (props) => {
 
   const onSendPress = async () => {
     try {
+      console.log(chatRoomID)
       const newMessageData = await API.graphql(
         graphqlOperation(
           createMessage, {
@@ -72,6 +74,37 @@ const InputBox = (props) => {
       )
 
       await updateChatRoomLastMessage(newMessageData.data.createMessage.id)
+
+
+      const {data: usersInRoomData} = await API.graphql(graphqlOperation(
+        listChatRoomUsers, {
+          filter: {
+            chatRoomID: {
+              eq: chatRoomID,
+            },
+            userID: {
+              ne: myUserId,
+            },
+          },
+        },
+      ))
+      
+      const { items } = usersInRoomData.listChatRoomUsers
+      
+      const expoTokens = items.map(item => item.user.expoToken)
+        const expoPushUri = 'https://exp.host/--/api/v2/push/send';
+        const body = {
+            "to": expoTokens,
+            "title": 'new message',
+            "body": message,
+        }
+        await fetch(expoPushUri, {
+          method: 'POST',
+          body: JSON.stringify(body),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
     } catch (e) {
       console.log(e);
     }

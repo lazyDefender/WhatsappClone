@@ -8,6 +8,7 @@ import {
     ScrollView,
     Dimensions,
     StyleSheet,
+    Image,
     TextInput,
     Button,
 } from 'react-native';
@@ -22,15 +23,19 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 
 import {RNS3} from 'react-native-aws3';
+import S3 from 'aws-s3';
+import AWS from 'aws-sdk';
 
 import { messagesByChatRoom } from '../src/graphql/queries';
 import { onCreateMessage } from '../src/graphql/subscriptions';
+// import { AWS_ACCESS_KEY_ID, AWS_SECRET_KEY } from '@env';
 
 
 import ChatMessage from "../components/ChatMessage";
 import BG from '../assets/images/BG.png';
 import InputBox from "../components/InputBox";
 import { getUser } from './queries';
+import { updateUser } from '../src/graphql/mutations';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const windowHeight = Dimensions.get('window').height;
@@ -38,6 +43,10 @@ const windowWidth = Dimensions.get('window').width;
 
 const ProfileScreen = () => {
     const [username, setUsername] = useState('')
+    const [id, setId] = useState(null)
+    const [imageSource, setImageSource] = useState('')
+    const [imageKey, setImageKey] = useState('')
+    const [status, setStatus] = useState('')
     useEffect(() => {
         const getCurrentUser = async () => {
             const userInfo = await Auth.currentAuthenticatedUser();
@@ -49,67 +58,142 @@ const ProfileScreen = () => {
                     }
                 )
             )
-            const { id, name, imageUri } =  userData.data.getUser
+            const { id, name, imageUri, status } =  userData.data.getUser
             // 
 
             setUsername(name)
-
+            setId(id)
+            setImageSource(imageUri)
+            setStatus(status)
         }
         getCurrentUser()
-    })
+    }, [])
   return (
     <ScrollView style={styles.container}>
         <View style={{...styles.userInfoSection, alignItems: 'flex-start'}}>
-            
-            <View style={{
+            {imageSource ? <Image
+                style={{
                     height: 100,
                     width: 100,
                     borderRadius: 50,
-                    backgroundColor: "#345",
-                    transform: [{
-                        translateY: -50,
-                    }]
-                }}>
-            </View>
+                }}
+                source={{
+                uri: imageSource,
+                }}
+            /> : <View style={{
+                        height: 100,
+                        width: 100,
+                        borderRadius: 50,
+                        backgroundColor: "#345",
+                        transform: [{
+                            translateY: -50,
+                        }]
+                    }}>
+                </View>}
+            
             <Button
                 title='Змінити фото'
                 onPress={async () => {
                     const {uri, name} = await DocumentPicker.getDocumentAsync({
                         type: 'image/*',
                     })
-                    console.log(uri)
                     const config = {
                         keyPrefix: "uploads/",
                         bucket: "chat-app-bucket214505-dev",
                         region: "us-east-1",
-                        accessKey: "AKIAUYAYZGLJL4WI3CM7",
-                        secretKey: "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",
+                        accessKey: 'AKIAUYAYZGLJNC4RBX4T',
+                        secretKey: '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',
                         successActionStatus: 201
                     }
-                    RNS3.put({
+                    const response = await RNS3.put({
                         uri,
                         name,
                         type: 'image/'+name.split('.')[1]
                     }, config)
+                    console.log(response.body.postResponse)
+                    await API.graphql({ query: updateUser, variables: {input: {
+                        id,
+                        imageUri: response.body.postResponse.location,
+                    }}});
+                    setImageKey(response.body.postResponse.key)
+                    setImageSource(response.body.postResponse.location)
+
                 }}
             />
             <Button
                 title='Видалити фото'
-                onPress={() => {}}
+                onPress={async () => {
+                    await API.graphql({ query: updateUser, variables: {input: {
+                        id,
+                        imageUri: null,
+                    }}});
+                    
+ 
+/* If the file that you want to delete it's in your bucket's root folder, don't provide any dirName in the config object */
+ 
+//In this case the file that we want to delete is in the folder 'photos' that we referred in the config object as the dirName
+ 
+                    const config = {
+                        bucketName: 'chat-app-bucket214505-dev',
+                        dirName: 'uploads',
+                        region: 'us-east-1',
+                        accessKeyId: 'AKIAUYAYZGLJNC4RBX4T',
+                        secretAccessKey: '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',
+                    }
+                    const S3Client = new S3(config);
+ 
+                    try {
+                        var bucketInstance = new AWS.S3({
+                            accessKeyId: 'AKIAUYAYZGLJNC4RBX4T',
+                            secretAccessKey: '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',
+                            region: 'us-east-1',
+                        });
+                        var params = {
+                            Bucket: 'chat-app-bucket214505-dev',
+                            Key: imageKey,
+                        };
+                        bucketInstance.deleteObject(params, function (err, data) {
+                            if (data) {
+                                console.log("File deleted successfully");
+                            }
+                            else {
+                                console.log("Check if you have sufficient permissions : "+err);
+                            }
+                        });
+                        setImageSource('')
+                    }
+                    catch(e){
+                        console.log('errr',e)
+                    }
+                    
+                }}
             />
             
-            <Text>Ім'я</Text>
+            <Text>Ім'я: {username}</Text>
             <TextInput
-                style={styles.input}
-                value={username}
-                numberOfLines={1}
-                placeholder={'username'}
-                placeholderTextColor='#666'
-                onChangeText={(text) => setUsername(text)}
+                value={status}
+                onChangeText={text => setStatus(text)}
+            />
+            <Button
+                title='Зберегти зміни'
+                onPress={async () => {
+                    await API.graphql({ query: updateUser, variables: {input: {
+                        id,
+                        status,
+                    }}});
+                }}
+            />
+            <Button
+                title='Видалити профіль'
+                onPress={async () => {
+                    const user = await Auth.currentAuthenticatedUser()
+                    await user.deleteUser()
+                }}
             />
             <Button
                 title="Вийти"
                 onPress={async () => {
+                    
                     await Auth.signOut()
                 }}
             />

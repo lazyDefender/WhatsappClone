@@ -22,6 +22,7 @@ export const createUser = /* GraphQL */ `
         }
         nextToken
       }
+      expoToken
       createdAt
       updatedAt
     }
@@ -47,6 +48,7 @@ export const updateUser = /* GraphQL */ `
         }
         nextToken
       }
+      expoToken
       createdAt
       updatedAt
     }
@@ -72,6 +74,7 @@ export const deleteUser = /* GraphQL */ `
         }
         nextToken
       }
+      expoToken
       createdAt
       updatedAt
     }
@@ -94,6 +97,7 @@ export const createChatRoomUser = /* GraphQL */ `
         chatRoomUser {
           nextToken
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -139,6 +143,7 @@ export const updateChatRoomUser = /* GraphQL */ `
         chatRoomUser {
           nextToken
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -184,6 +189,7 @@ export const deleteChatRoomUser = /* GraphQL */ `
         chatRoomUser {
           nextToken
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -252,6 +258,7 @@ export const createChatRoom = /* GraphQL */ `
           name
           imageUri
           status
+          expoToken
           createdAt
           updatedAt
         }
@@ -308,6 +315,7 @@ export const updateChatRoom = /* GraphQL */ `
           name
           imageUri
           status
+          expoToken
           createdAt
           updatedAt
         }
@@ -364,6 +372,7 @@ export const deleteChatRoom = /* GraphQL */ `
           name
           imageUri
           status
+          expoToken
           createdAt
           updatedAt
         }
@@ -399,6 +408,7 @@ export const createMessage = /* GraphQL */ `
         chatRoomUser {
           nextToken
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -445,6 +455,7 @@ export const updateMessage = /* GraphQL */ `
         chatRoomUser {
           nextToken
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -491,6 +502,7 @@ export const deleteMessage = /* GraphQL */ `
         chatRoomUser {
           nextToken
         }
+        expoToken
         createdAt
         updatedAt
       }

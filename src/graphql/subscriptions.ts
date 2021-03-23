@@ -19,6 +19,7 @@ export const onCreateUser = /* GraphQL */ `
         }
         nextToken
       }
+      expoToken
       createdAt
       updatedAt
     }
@@ -41,6 +42,7 @@ export const onUpdateUser = /* GraphQL */ `
         }
         nextToken
       }
+      expoToken
       createdAt
       updatedAt
     }
@@ -63,6 +65,7 @@ export const onDeleteUser = /* GraphQL */ `
         }
         nextToken
       }
+      expoToken
       createdAt
       updatedAt
     }
@@ -82,6 +85,7 @@ export const onCreateChatRoomUser = /* GraphQL */ `
         chatRoomUser {
           nextToken
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -124,6 +128,7 @@ export const onUpdateChatRoomUser = /* GraphQL */ `
         chatRoomUser {
           nextToken
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -166,6 +171,7 @@ export const onDeleteChatRoomUser = /* GraphQL */ `
         chatRoomUser {
           nextToken
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -231,6 +237,7 @@ export const onCreateChatRoom = /* GraphQL */ `
           name
           imageUri
           status
+          expoToken
           createdAt
           updatedAt
         }
@@ -284,6 +291,7 @@ export const onUpdateChatRoom = /* GraphQL */ `
           name
           imageUri
           status
+          expoToken
           createdAt
           updatedAt
         }
@@ -337,6 +345,7 @@ export const onDeleteChatRoom = /* GraphQL */ `
           name
           imageUri
           status
+          expoToken
           createdAt
           updatedAt
         }
@@ -369,6 +378,7 @@ export const onCreateMessage = /* GraphQL */ `
         chatRoomUser {
           nextToken
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -412,6 +422,7 @@ export const onUpdateMessage = /* GraphQL */ `
         chatRoomUser {
           nextToken
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -455,6 +466,7 @@ export const onDeleteMessage = /* GraphQL */ `
         chatRoomUser {
           nextToken
         }
+        expoToken
         createdAt
         updatedAt
       }

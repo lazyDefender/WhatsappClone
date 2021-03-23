@@ -19,6 +19,7 @@ export const getUser = /* GraphQL */ `
         }
         nextToken
       }
+      expoToken
       createdAt
       updatedAt
     }
@@ -39,6 +40,7 @@ export const listUsers = /* GraphQL */ `
         chatRoomUser {
           nextToken
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -60,6 +62,7 @@ export const getChatRoomUser = /* GraphQL */ `
         chatRoomUser {
           nextToken
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -104,6 +107,7 @@ export const listChatRoomUsers = /* GraphQL */ `
           name
           imageUri
           status
+          expoToken
           createdAt
           updatedAt
         }
@@ -157,6 +161,7 @@ export const getChatRoom = /* GraphQL */ `
           name
           imageUri
           status
+          expoToken
           createdAt
           updatedAt
         }
@@ -220,6 +225,7 @@ export const getMessage = /* GraphQL */ `
         chatRoomUser {
           nextToken
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -265,6 +271,7 @@ export const listMessages = /* GraphQL */ `
           name
           imageUri
           status
+          expoToken
           createdAt
           updatedAt
         }
@@ -308,6 +315,7 @@ export const messagesByChatRoom = /* GraphQL */ `
           name
           imageUri
           status
+          expoToken
           createdAt
           updatedAt
         }
@@ -320,6 +328,88 @@ export const messagesByChatRoom = /* GraphQL */ `
         updatedAt
       }
       nextToken
+    }
+  }
+`;
+export const searchChatRoomUsers = /* GraphQL */ `
+  query SearchChatRoomUsers(
+    $filter: SearchableChatRoomUserFilterInput
+    $sort: SearchableChatRoomUserSortInput
+    $limit: Int
+    $nextToken: String
+    $from: Int
+  ) {
+    searchChatRoomUsers(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+      from: $from
+    ) {
+      items {
+        id
+        userID
+        chatRoomID
+        user {
+          id
+          name
+          imageUri
+          status
+          expoToken
+          createdAt
+          updatedAt
+        }
+        chatRoom {
+          id
+          lastMessageID
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+      total
+    }
+  }
+`;
+export const searchChatRooms = /* GraphQL */ `
+  query SearchChatRooms(
+    $filter: SearchableChatRoomFilterInput
+    $sort: SearchableChatRoomSortInput
+    $limit: Int
+    $nextToken: String
+    $from: Int
+  ) {
+    searchChatRooms(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+      from: $from
+    ) {
+      items {
+        id
+        chatRoomUsers {
+          nextToken
+        }
+        messages {
+          nextToken
+        }
+        lastMessageID
+        lastMessage {
+          id
+          createdAt
+          content
+          userID
+          chatRoomID
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+      total
     }
   }
 `;

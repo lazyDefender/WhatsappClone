@@ -10,14 +10,16 @@ import {
 } from '@expo/vector-icons';
 
 import ProfileScreen from '../screens/ProfileScreen';
+import SearchScreen from '../screens/SearchScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import ChatRoomScreen from '../screens/ChatRoomScreen';
 import { RootStackParamList } from '../types';
-import MainTabNavigator from './MainTabNavigator';
+import MainTabNavigator from '../screens/MainScreen';
 import LinkingConfiguration from './LinkingConfiguration';
 import Colors from "../constants/Colors";
 import ContactsScreen from "../screens/ContactsScreen";
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import ChatsScreen from '../screens/ChatsScreen';
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -51,7 +53,7 @@ function RootNavigator() {
     }}>
       <Stack.Screen
         name="Root"
-        component={MainTabNavigator}
+        component={ChatsScreen}
         options={({navigation, route}) => ({
             title: "WhatsApp",
             headerRight: () => (
@@ -61,7 +63,7 @@ function RootNavigator() {
                 justifyContent: 'space-between',
                 marginRight: 10,
               }}>
-                <Octicons name="search" size={22} color={'white'} />
+                <Octicons name="search" size={22} color={'white'} onPress={e => navigation.navigate('Search')}/>
                 <TouchableOpacity onPress={(e) => navigation.navigate('Profile')}>
                   <MaterialCommunityIcons name="account" size={22} color={'white'} />
                 </TouchableOpacity>
@@ -74,6 +76,11 @@ function RootNavigator() {
       <Stack.Screen
         name="Profile"
         component={ProfileScreen} 
+      >
+      </Stack.Screen>
+      <Stack.Screen
+        name="Search"
+        component={SearchScreen} 
       >
       </Stack.Screen>
       <Stack.Screen

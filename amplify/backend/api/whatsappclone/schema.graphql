@@ -4,10 +4,11 @@ type User @model {
   imageUri: String
   status: String
   chatRoomUser: [ChatRoomUser] @connection(keyName: "byUser", fields: ["id"])
+  expoToken: String
 }
 
 type ChatRoomUser
-@model
+@model @searchable
 @key(name: "byUser", fields: ["userID", "chatRoomID"])
 @key(name: "byChatRoom", fields: ["chatRoomID", "userID"]) {
   id: ID!
@@ -17,11 +18,11 @@ type ChatRoomUser
   chatRoom: ChatRoom @connection(fields: ["chatRoomID"])
 }
 
-type ChatRoom @model {
+type ChatRoom @model @searchable{
   id: ID!
   chatRoomUsers: [ChatRoomUser] @connection(keyName: "byChatRoom", fields: ["id"])
   messages: [Message]  @connection(keyName: "byChatRoom", fields: ["id"])
-  lastMessageID: ID!
+  lastMessageID: ID
   lastMessage: Message @connection(fields: ["lastMessageID"])
 }
 
