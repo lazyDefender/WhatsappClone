@@ -1,7 +1,11 @@
 import { NavigationContainer, DefaultTheme, DarkTheme, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import {ColorSchemeName, View} from 'react-native';
+import {
+  ColorSchemeName, 
+  View,
+  Text,
+} from 'react-native';
 import {
   Octicons,
   MaterialCommunityIcons,
@@ -88,18 +92,31 @@ function RootNavigator() {
         component={ChatRoomScreen}
         options={({ route })  => ({
           title: route.params.name,
-          headerRight: () => (
-            <View style={{
-              flexDirection: 'row',
-              width: 100,
-              justifyContent: 'space-between',
-              marginRight: 10,
-            }}>
-              <FontAwesome5 name="video" size={22} color={'white'} />
-              <MaterialIcons name="call" size={22} color={'white'} />
-              <MaterialCommunityIcons name="dots-vertical" size={22} color={'white'} />
-            </View>
-          )
+          // headerRight: () => (
+          //   <View style={{
+          //     flexDirection: 'row',
+          //     width: 100,
+          //     justifyContent: 'flex-end',
+          //     marginRight: 15,
+          //   }}>
+          //     <View>
+          //       <MaterialCommunityIcons name="dots-vertical" size={22} color={'white'} />
+          //       <View style={{
+          //         position: 'absolute',
+          //         top: 40,
+          //         right: 5,
+          //         width: 90,
+          //         backgroundColor: Colors.light.tint,
+          //       }}>
+          //         <Text style={{
+          //           color: '#fff',
+          //           padding: 10,
+          //         }}>menu</Text>
+          //       </View>
+          //     </View>
+              
+          //   </View>
+          // )
         })}
       />
       <Stack.Screen

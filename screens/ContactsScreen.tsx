@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as Contacts from 'expo-contacts';
 import {FlatList, StyleSheet} from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { View } from '../components/Themed';
@@ -13,16 +14,17 @@ export default function ContactsScreen() {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      try {
-        const usersData = await API.graphql(
-          graphqlOperation(
-            listUsers
-          )
-        )
-        setUsers(usersData.data.listUsers.items);
-      } catch (e) {
-        console.log(e);
-      }
+        const { status } = await Contacts.requestPermissionsAsync();
+        if (status === 'granted') {
+          const { data } = await Contacts.getContactsAsync({
+            fields: [Contacts.Fields.PhoneNumbers[0]],
+          });
+  
+          if (data.length > 0) {
+            const contact = data[0];
+            console.log(contact);
+          }
+        }
     }
     fetchUsers();
   }, [])

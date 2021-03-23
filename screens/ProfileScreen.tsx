@@ -40,6 +40,8 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import {
     AWS_ACCESS_KEY_ID,
     AWS_SECRET_KEY,
+    AWS_BUCKET,
+    AWS_REGION,
 } from '../env'
 
 const windowHeight = Dimensions.get('window').height;
@@ -103,10 +105,10 @@ const ProfileScreen = () => {
                     })
                     const config = {
                         keyPrefix: "uploads/",
-                        bucket: "chat-app-bucket214505-dev",
-                        region: "us-east-1",
-                        accessKey: 'AKIAUYAYZGLJNC4RBX4T',
-                        secretKey: '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',
+                        bucket: AWS_BUCKET,
+                        region: AWS_REGION,
+                        accessKey: AWS_ACCESS_KEY_ID,
+                        secretKey: AWS_SECRET_KEY,
                         successActionStatus: 201
                     }
                     const response = await RNS3.put({
@@ -138,22 +140,22 @@ const ProfileScreen = () => {
 //In this case the file that we want to delete is in the folder 'photos' that we referred in the config object as the dirName
  
                     const config = {
-                        bucketName: 'chat-app-bucket214505-dev',
+                        bucketName: AWS_BUCKET,
                         dirName: 'uploads',
-                        region: 'us-east-1',
-                        accessKeyId: 'AKIAUYAYZGLJNC4RBX4T',
-                        secretAccessKey: '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',
+                        region: AWS_REGION,
+                        accessKeyId: AWS_ACCESS_KEY_ID,
+                        secretAccessKey: AWS_SECRET_KEY,
                     }
                     const S3Client = new S3(config);
  
                     try {
                         var bucketInstance = new AWS.S3({
-                            accessKeyId: 'AKIAUYAYZGLJNC4RBX4T',
-                            secretAccessKey: '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',
-                            region: 'us-east-1',
+                            region: AWS_REGION,
+                            accessKeyId: AWS_ACCESS_KEY_ID,
+                            secretAccessKey: AWS_SECRET_KEY,
                         });
                         var params = {
-                            Bucket: 'chat-app-bucket214505-dev',
+                            Bucket: AWS_BUCKET,
                             Key: imageKey,
                         };
                         bucketInstance.deleteObject(params, function (err, data) {
