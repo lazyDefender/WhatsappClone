@@ -32,7 +32,7 @@ export default function ChatsScreen() {
           )
         )
 
-        console.log(userData)
+        // console.log(userData)
 
         setChatRooms(userData.data.getUser.chatRoomUser.items)
       } catch (e) {
@@ -40,7 +40,7 @@ export default function ChatsScreen() {
       }
     }
     fetchChatRooms();
-  });
+  }, []);
 
   return (
     <View style={styles.container}>
