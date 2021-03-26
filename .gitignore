@@ -13,7 +13,7 @@ web-build/
 .DS_Store
 
 env.js
-*/.env
+.env
 
 #amplify
 amplify/\#current-cloud-backend

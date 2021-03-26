@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {Dimensions, FlatList, StyleSheet} from 'react-native';
-import { API, graphqlOperation } from 'aws-amplify';
+import { API, graphqlOperation, Auth } from 'aws-amplify';
 import { View } from '../components/Themed';
 import ContactListItem from '../components/ContactListItem';
 
-import { listUsers }  from '../src/graphql/queries';
+import { listUsers, getUser }  from '../src/graphql/queries';
 import {useEffect, useState} from "react";
 import { TextInput } from 'react-native-gesture-handler';
 
@@ -12,6 +12,23 @@ export default function SearchScreen() {
 
     const [query, setQuery] = useState('')
   const [users, setUsers] = useState([]);
+  const [myId, setMyId] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const userInfo = await Auth.currentAuthenticatedUser();
+
+      const userData = await API.graphql(
+        graphqlOperation(
+          getUser, {
+            id: userInfo.attributes.sub,
+          }
+        )
+      )
+      const { id } =  userData.data.getUser;
+      setMyId(id);
+    })();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -27,6 +44,11 @@ export default function SearchScreen() {
                                 filter: {
                                     name: {
                                         contains: text,
+                                    },
+                                    and: {
+                                      id: {
+                                        ne: myId,
+                                      }
                                     }
                                }
                         }});

@@ -24,17 +24,17 @@ export default function ChatsScreen() {
         const userInfo = await Auth.currentAuthenticatedUser();
 
 
-        // const userData = await API.graphql(
-        //   graphqlOperation(
-        //     getUser, {
-        //       id: userInfo.attributes.sub,
-        //     }
-        //   )
-        // )
+        const userData = await API.graphql(
+          graphqlOperation(
+            getUser, {
+              id: userInfo.attributes.sub,
+            }
+          )
+        )
 
-        // console.log(userData)
+        console.log(userData)
 
-        // setChatRooms(userData.data.getUser.chatRoomUser.items)
+        setChatRooms(userData.data.getUser.chatRoomUser.items)
       } catch (e) {
         console.log('error', e);
       }
