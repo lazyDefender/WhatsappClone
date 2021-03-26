@@ -40,7 +40,7 @@ export default function ChatsScreen() {
       }
     }
     fetchChatRooms();
-  }, []);
+  });
 
   return (
     <View style={styles.container}>
