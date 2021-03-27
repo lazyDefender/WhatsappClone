@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {FlatList, StyleSheet} from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { View } from '../components/Themed';
 import ChatListItem from '../components/ChatListItem';
 import {
@@ -18,7 +19,7 @@ export default function ChatsScreen() {
 
   const [chatRooms, setChatRooms] = useState([]);
 
-  useEffect(() => {
+  useFocusEffect(() => {
     const fetchChatRooms = async () => {
       try {
         const userInfo = await Auth.currentAuthenticatedUser();
@@ -32,7 +33,7 @@ export default function ChatsScreen() {
           )
         )
 
-        // console.log(userData)
+        console.log(userData.data.getUser.chatRoomUser.items)
 
         setChatRooms(userData.data.getUser.chatRoomUser.items)
       } catch (e) {
